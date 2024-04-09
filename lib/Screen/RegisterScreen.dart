@@ -107,7 +107,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         return;
       }
 
-      Navigator.pushNamed(context, "/oae");
+      Navigator.pushNamed(context, "/oae",
+          arguments: response["body"]["data"]["patient"]["id"]);
     } catch (err) {
       print(err);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -319,52 +320,62 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                 )),
-            Container(
-              margin: EdgeInsets.only(top: 12),
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Color(0xFF5F5F5F), width: 0.5)),
-              padding: EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton(
-                    value: deliveryType,
-                    dropdownColor: Colors.white,
-                    hint: Text(
-                      "Select delivery type",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    items: deliveryTypeItems,
-                    onChanged: (value) {
-                      setState(() {
-                        deliveryType = value.toString();
-                      });
-                    }),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 12),
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Color(0xFF5F5F5F), width: 0.5)),
-              padding: EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton(
-                    value: type,
-                    dropdownColor: Colors.white,
-                    hint: Text(
-                      "Select delivery type",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    items: typeItems,
-                    onChanged: (value) {
-                      setState(() {
-                        type = value.toString();
-                      });
-                    }),
-              ),
-            ),
+            DropdownButtonFormField(
+                padding: EdgeInsets.only(top: 12),
+                decoration: InputDecoration(
+                  // contentPadding: EdgeInsets.fromLTRB(0, 5.5, 0, 0),
+                  labelText: 'Birth type',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: Colors.black, width: 0.5),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide:
+                        BorderSide(color: Color(0xFF5F5F5F), width: 0.5),
+                  ),
+                ),
+                value: deliveryType,
+                dropdownColor: Colors.white,
+                hint: Text(
+                  "Select delivery type",
+                  style: TextStyle(color: Colors.black),
+                ),
+                items: deliveryTypeItems,
+                onChanged: (value) {
+                  setState(() {
+                    deliveryType = value.toString();
+                  });
+                }),
+            DropdownButtonFormField(
+                padding: EdgeInsets.only(top: 12),
+                decoration: InputDecoration(
+                  // contentPadding: EdgeInsets.fromLTRB(0, 5.5, 0, 0),
+                  labelText: 'Delivery type',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: Colors.black, width: 0.5),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide:
+                        BorderSide(color: Color(0xFF5F5F5F), width: 0.5),
+                  ),
+                ),
+                value: type,
+                dropdownColor: Colors.white,
+                hint: Text(
+                  "Select delivery type",
+                  style: TextStyle(color: Colors.black),
+                ),
+                items: typeItems,
+                onChanged: (value) {
+                  setState(() {
+                    type = value.toString();
+                  });
+                }),
             Padding(
                 padding: const EdgeInsets.only(top: 12),
                 child: TextFormField(
@@ -384,29 +395,62 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                 )),
-            Container(
-              margin: EdgeInsets.only(top: 12),
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Color(0xFF5F5F5F), width: 0.5)),
-              padding: EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton(
-                    value: blueeness,
-                    dropdownColor: Colors.white,
-                    hint: Text(
-                      "Blueeness",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    items: blueenessType,
-                    onChanged: (value) {
-                      setState(() {
-                        birthCry = value.toString();
-                      });
-                    }),
-              ),
-            ),
+            DropdownButtonFormField(
+                padding: EdgeInsets.only(top: 12),
+                decoration: InputDecoration(
+                  // contentPadding: EdgeInsets.fromLTRB(0, 5.5, 0, 0),
+                  labelText: 'Birth cry',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: Colors.black, width: 0.5),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide:
+                        BorderSide(color: Color(0xFF5F5F5F), width: 0.5),
+                  ),
+                ),
+                value: birthCry,
+                dropdownColor: Colors.white,
+                hint: Text(
+                  "Blueeness",
+                  style: TextStyle(color: Colors.black),
+                ),
+                items: birthCryItems,
+                onChanged: (value) {
+                  setState(() {
+                    birthCry = value.toString();
+                  });
+                }),
+            DropdownButtonFormField(
+                padding: EdgeInsets.only(top: 12),
+                decoration: InputDecoration(
+                  // contentPadding: EdgeInsets.fromLTRB(0, 5.5, 0, 0),
+                  labelText: 'Blueness at birth',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: Colors.black, width: 0.5),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide:
+                        BorderSide(color: Color(0xFF5F5F5F), width: 0.5),
+                  ),
+                ),
+                value: blueeness,
+                dropdownColor: Colors.white,
+                hint: Text(
+                  "Blueeness",
+                  style: TextStyle(color: Colors.black),
+                ),
+                items: blueenessType,
+                onChanged: (value) {
+                  setState(() {
+                    blueeness = value.toString();
+                  });
+                }),
             Container(
               margin: EdgeInsets.only(top: 12),
               width: MediaQuery.of(context).size.width,

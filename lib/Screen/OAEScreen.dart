@@ -11,9 +11,11 @@ class _OAEScreenState extends State<OAEScreen> {
   Future<void> handleOAEYes() async {}
 
   Future<void> handleOAENo() async {}
+  dynamic id;
 
   @override
   Widget build(BuildContext context) {
+    id = ModalRoute.of(context)!.settings.arguments;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -28,9 +30,14 @@ class _OAEScreenState extends State<OAEScreen> {
                   color: Color(0xFF11ADA2),
                 ),
                 Spacer(),
-                Icon(
-                  Icons.close,
-                  size: 36,
+                IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/");
+                  },
+                  icon: Icon(
+                    Icons.close,
+                    size: 36,
+                  ),
                 ),
               ],
             ),
