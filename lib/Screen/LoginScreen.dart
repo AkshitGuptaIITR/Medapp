@@ -23,10 +23,9 @@ class _LoginScreenState extends State<LoginScreen> {
       final storage = FlutterSecureStorage();
       final response = await Api.post(
           "/user/login", {"email": email, "password": password}, "");
-      print("check");
       if (response["statusCode"] >= 400) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(response["body"]),
+          content: Text(response["body"]["message"]),
           backgroundColor: Colors.red,
         ));
         return;
