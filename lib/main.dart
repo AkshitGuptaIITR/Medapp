@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:medapp/Redux/AuthState/AuthStateActions.dart';
-import 'package:medapp/Redux/AuthState/AuthStateReducer.dart';
 import 'package:medapp/Redux/store.dart';
-import 'package:medapp/utils/Api.dart';
 import 'package:medapp/utils/Colors.dart';
 import 'package:medapp/utils/Routes.dart';
 import 'package:flutter_redux/flutter_redux.dart';
