@@ -1,30 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:medapp/utils/Colors.dart';
 
-class OAELastScreeningScreen extends StatefulWidget {
-  const OAELastScreeningScreen({super.key});
+class OAEScheduleScreen extends StatefulWidget {
+  const OAEScheduleScreen({super.key});
 
   @override
-  State<OAELastScreeningScreen> createState() => _OAELastScreeningScreenState();
+  State<OAEScheduleScreen> createState() => _OAEScheduleScreenState();
 }
 
-class _OAELastScreeningScreenState extends State<OAELastScreeningScreen> {
+class _OAEScheduleScreenState extends State<OAEScheduleScreen> {
   dynamic id;
-  DateTime selectedDate = DateTime.now().subtract(Duration(days: 1));
-
-  void onDateSelected(DateTime newDate) {
-    setState(() {
-      selectedDate = newDate;
-    });
-    Navigator.pushNamed(context, "/oaeSchedule");
-    print("Selected date: $newDate");
+  Future<void> handleYesClick() async {
+    Navigator.pushNamed(context, "/oaeLastScreening", arguments: id);
   }
 
-  Future<void> handlePassClick() async {
-    Navigator.pushNamed(context, "/oaeCount", arguments: id);
-  }
-
-  Future<void> handleReferClick() async {}
+  Future<void> handleNoClick() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +46,9 @@ class _OAELastScreeningScreenState extends State<OAELastScreeningScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 8, left: 24, right: 24),
+            padding: const EdgeInsets.only(top: 102, left: 24, right: 24),
             child: Text(
-              "What was the result of last OAE screening?",
+              "Would you like to schedule OAE screening test?",
               style: TextStyle(
                 color: Color(0xFF323F4B),
                 fontSize: 40,
@@ -68,23 +58,61 @@ class _OAELastScreeningScreenState extends State<OAELastScreeningScreen> {
             ),
           ),
           Spacer(),
-          Column(
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: SizedBox(
-                  child: CalendarDatePicker(
-                    initialDate: selectedDate,
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime.now(),
-                    onDateChanged: onDateSelected,
+            children: [
+              Spacer(),
+              GestureDetector(
+                onTap: handleYesClick,
+                child: Container(
+                  width: 96,
+                  height: 60,
+                  decoration: ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(width: 2, color: Color(0xFF11ADA2)),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    'YES',
+                    style: TextStyle(
+                      color: Color(0xFF11ADA2),
+                      fontSize: 24,
+                      fontFamily: 'Mulish',
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
+              Spacer(),
+              GestureDetector(
+                onTap: handleNoClick,
+                child: Container(
+                  width: 96,
+                  height: 60,
+                  decoration: ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(width: 2, color: Color(0xFF11ADA2)),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    'NO',
+                    style: TextStyle(
+                      color: Color(0xFF11ADA2),
+                      fontSize: 24,
+                      fontFamily: 'Mulish',
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+              Spacer(),
             ],
           ),
-          Spacer(),
+          // Spacer(),
           Container(
             margin: EdgeInsets.only(top: 72),
             width: MediaQuery.of(context).size.width,
