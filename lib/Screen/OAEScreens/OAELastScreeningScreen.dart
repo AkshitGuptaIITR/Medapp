@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:medapp/utils/Colors.dart';
 
-class OAECountScreen extends StatefulWidget {
-  const OAECountScreen({super.key});
+class OAELastScreeningScreen extends StatefulWidget {
+  const OAELastScreeningScreen({super.key});
 
   @override
-  State<OAECountScreen> createState() => _OAECountScreenState();
+  State<OAELastScreeningScreen> createState() => _OAELastScreeningScreenState();
 }
 
-class _OAECountScreenState extends State<OAECountScreen> {
-  Future<void> handleNextClick() async {
-    Navigator.pushNamed(context, "/oaeLastResult", arguments: id);
+class _OAELastScreeningScreenState extends State<OAELastScreeningScreen> {
+  dynamic id;
+  DateTime selectedDate = DateTime.now().subtract(Duration(days: 1));
+
+  void onDateSelected(DateTime newDate) {
+    setState(() {
+      selectedDate = newDate;
+    });
+    print("Selected date: $newDate");
   }
 
-  dynamic id;
+  Future<void> handlePassClick() async {
+    Navigator.pushNamed(context, "/oaeCount", arguments: id);
+  }
 
-  final TextEditingController countController = TextEditingController();
+  Future<void> handleReferClick() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -47,66 +55,35 @@ class _OAECountScreenState extends State<OAECountScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 102, left: 24, right: 24),
+            padding: const EdgeInsets.only(top: 8, left: 24, right: 24),
             child: Text(
-              "How many times has OAE test conducted?",
+              "What was the result of last OAE screening?",
               style: TextStyle(
                 color: Color(0xFF323F4B),
-                fontSize: 46,
+                fontSize: 40,
                 fontFamily: 'Kamerik 105 Cyrillic',
                 fontWeight: FontWeight.w900,
               ),
             ),
           ),
           Spacer(),
-          Container(
-            width: 200,
-            child: TextFormField(
-              keyboardType: TextInputType.number,
-              controller: countController,
-              decoration: InputDecoration(
-                labelText: "Enter number of time OAE Conducted",
-                enabledBorder: const OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.black, width: 0.0),
-                ),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: primaryColor, width: 0.0),
-                ),
-              ),
-            ),
-          ),
-          Spacer(),
-          Row(
+          Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Spacer(),
-              GestureDetector(
-                onTap: handleNextClick,
-                child: Container(
-                  width: 96,
-                  height: 60,
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 2, color: Color(0xFF11ADA2)),
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Next',
-                    style: TextStyle(
-                      color: Color(0xFF11ADA2),
-                      fontSize: 24,
-                      fontFamily: 'Mulish',
-                      fontWeight: FontWeight.w700,
-                    ),
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: SizedBox(
+                  child: CalendarDatePicker(
+                    initialDate: selectedDate,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime.now(),
+                    onDateChanged: onDateSelected,
                   ),
                 ),
               ),
-              Spacer(),
             ],
           ),
-          // Spacer(),
+          Spacer(),
           Container(
             margin: EdgeInsets.only(top: 72),
             width: MediaQuery.of(context).size.width,
@@ -186,14 +163,8 @@ class _OAECountScreenState extends State<OAECountScreen> {
                         Positioned(
                           left: 5,
                           top: 6,
-                          child: Container(
-                              alignment: Alignment.center,
-                              width: 9.42,
-                              height: 20.19,
-                              child: Icon(
-                                Icons.done,
-                                color: primaryColor,
-                              )),
+                          child: Icon(Icons.done,
+                              color: primaryColor, opticalSize: 20),
                         ),
                       ],
                     ),

@@ -11,7 +11,7 @@ class OAELastResultScreen extends StatefulWidget {
 class _OAELastResultScreenState extends State<OAELastResultScreen> {
   dynamic id;
   Future<void> handlePassClick() async {
-    Navigator.pushNamed(context, "/oaeCount", arguments: id);
+    Navigator.pushNamed(context, "/oaeLastScreening", arguments: id);
   }
 
   Future<void> handleReferClick() async {}
@@ -51,7 +51,7 @@ class _OAELastResultScreenState extends State<OAELastResultScreen> {
               "What was the result of last OAE screening?",
               style: TextStyle(
                 color: Color(0xFF323F4B),
-                fontSize: 46,
+                fontSize: 40,
                 fontFamily: 'Kamerik 105 Cyrillic',
                 fontWeight: FontWeight.w900,
               ),
