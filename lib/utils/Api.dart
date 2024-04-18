@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Api {
-  static const String baseUrl = 'http://192.168.0.2:4000/api/v1';
+  static const String baseUrl = 'http://192.168.0.7:4000/api/v1';
 
   static Future<Map<String, dynamic>> get(String endpoint, String token) async {
     final response = await http.get(Uri.parse('$baseUrl$endpoint'), headers: {

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:medapp/utils/Colors.dart';
 
-class OAEScreen extends StatefulWidget {
-  const OAEScreen({super.key});
+class OAELastResultScreen extends StatefulWidget {
+  const OAELastResultScreen({super.key});
 
   @override
-  State<OAEScreen> createState() => _OAEScreenState();
+  State<OAELastResultScreen> createState() => _OAELastResultScreenState();
 }
 
-class _OAEScreenState extends State<OAEScreen> {
-  Future<void> handleOAEYes() async {}
-
-  Future<void> handleOAENo() async {}
+class _OAELastResultScreenState extends State<OAELastResultScreen> {
   dynamic id;
+  Future<void> handlePassClick() async {
+    Navigator.pushNamed(context, "/oaeCount", arguments: id);
+  }
+
+  Future<void> handleReferClick() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +48,7 @@ class _OAEScreenState extends State<OAEScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 102, left: 24, right: 24),
             child: Text(
-              "Was OAE screening test done?",
+              "What was the result of last OAE screening?",
               style: TextStyle(
                 color: Color(0xFF323F4B),
                 fontSize: 46,
@@ -55,65 +58,63 @@ class _OAEScreenState extends State<OAEScreen> {
             ),
           ),
           Spacer(),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 72),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Spacer(),
-                GestureDetector(
-                  onTap: handleOAEYes,
-                  child: Container(
-                    width: 96,
-                    height: 60,
-                    decoration: ShapeDecoration(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(width: 2, color: Color(0xFF11ADA2)),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Spacer(),
+              GestureDetector(
+                onTap: handlePassClick,
+                child: Container(
+                  width: 96,
+                  height: 60,
+                  decoration: ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(width: 2, color: Color(0xFF11ADA2)),
+                      borderRadius: BorderRadius.circular(50),
                     ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'YES',
-                      style: TextStyle(
-                        color: Color(0xFF11ADA2),
-                        fontSize: 24,
-                        fontFamily: 'Mulish',
-                        fontWeight: FontWeight.w700,
-                      ),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    'PASS',
+                    style: TextStyle(
+                      color: Color(0xFF11ADA2),
+                      fontSize: 24,
+                      fontFamily: 'Mulish',
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
-                Spacer(),
-                GestureDetector(
-                  onTap: handleOAENo,
-                  child: Container(
-                    width: 96,
-                    height: 60,
-                    decoration: ShapeDecoration(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(width: 2, color: Color(0xFF11ADA2)),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
+              ),
+              Spacer(),
+              GestureDetector(
+                onTap: handleReferClick,
+                child: Container(
+                  width: 96,
+                  height: 60,
+                  decoration: ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(width: 2, color: Color(0xFF11ADA2)),
+                      borderRadius: BorderRadius.circular(50),
                     ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'NO',
-                      style: TextStyle(
-                        color: Color(0xFF11ADA2),
-                        fontSize: 24,
-                        fontFamily: 'Mulish',
-                        fontWeight: FontWeight.w700,
-                      ),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    'REFER',
+                    style: TextStyle(
+                      color: Color(0xFF11ADA2),
+                      fontSize: 24,
+                      fontFamily: 'Mulish',
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
-                Spacer(),
-              ],
-            ),
+              ),
+              Spacer(),
+            ],
           ),
           // Spacer(),
           Container(
+            margin: EdgeInsets.only(top: 72),
             width: MediaQuery.of(context).size.width,
             height: 100,
             child: Stack(
@@ -189,23 +190,10 @@ class _OAEScreenState extends State<OAEScreen> {
                           ),
                         ),
                         Positioned(
-                          left: 12,
-                          top: 16,
-                          child: SizedBox(
-                            width: 9.42,
-                            height: 20.19,
-                            child: Text(
-                              '1',
-                              style: TextStyle(
-                                color: Color(0xFF11ADA2),
-                                fontSize: 20,
-                                fontFamily: 'Kamerik 105 Cyrillic',
-                                fontWeight: FontWeight.w700,
-                                height: 0.05,
-                                letterSpacing: 1.25,
-                              ),
-                            ),
-                          ),
+                          left: 5,
+                          top: 6,
+                          child: Icon(Icons.done,
+                              color: primaryColor, opticalSize: 20),
                         ),
                       ],
                     ),

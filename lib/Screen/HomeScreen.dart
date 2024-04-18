@@ -181,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 return GestureDetector(
                   onTap: () {
                     if (index == 0) {
-                      Navigator.pushNamed(context, "/register");
+                      Navigator.pushNamed(context, "/oae");
                     }
                   },
                   child: Container(
