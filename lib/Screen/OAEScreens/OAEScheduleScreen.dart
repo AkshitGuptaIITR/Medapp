@@ -11,10 +11,12 @@ class OAEScheduleScreen extends StatefulWidget {
 class _OAEScheduleScreenState extends State<OAEScheduleScreen> {
   dynamic id;
   Future<void> handleYesClick() async {
-    Navigator.pushNamed(context, "/oaeLastScreening", arguments: id);
+    Navigator.pushNamed(context, "/oaeCity", arguments: id);
   }
 
-  Future<void> handleNoClick() async {}
+  Future<void> handleNoClick() async {
+    Navigator.pushNamed(context, "/");
+  }
 
   @override
   Widget build(BuildContext context) {

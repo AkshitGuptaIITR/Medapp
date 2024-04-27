@@ -38,15 +38,17 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future<void> _initializeWidget() async {
+    final storage = FlutterSecureStorage();
+    final token = await storage.read(key: "token");
+    if (token == "") {
+      return;
+    }
     setState(() {
       isLoading = true;
     });
-    final storage = FlutterSecureStorage();
-    final token = await storage.read(key: "token");
     if (token != null) {
       try {
         final response = await Api.get("/user/refresh", token);
-        print(response);
         if (response["statusCode"] >= 400) {
           print(response["body"]);
           Navigator.pushNamed(context, "/login");

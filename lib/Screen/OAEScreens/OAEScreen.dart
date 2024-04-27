@@ -10,11 +10,12 @@ class OAEScreen extends StatefulWidget {
 class _OAEScreenState extends State<OAEScreen> {
   dynamic id;
   Future<void> handleOAEYes() async {
-    print("check");
     Navigator.pushNamed(context, "/oaeCount", arguments: id);
   }
 
-  Future<void> handleOAENo() async {}
+  Future<void> handleOAENo() async {
+    Navigator.pushNamed(context, "/oaeSchedule", arguments: id);
+  }
 
   @override
   Widget build(BuildContext context) {
