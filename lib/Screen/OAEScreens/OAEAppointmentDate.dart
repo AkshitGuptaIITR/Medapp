@@ -1,72 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:medapp/utils/Api.dart';
 import 'package:medapp/utils/Colors.dart';
 
-class OAEHospitalScreen extends StatefulWidget {
-  const OAEHospitalScreen({super.key});
+class OAEAppointmentDate extends StatefulWidget {
+  const OAEAppointmentDate({super.key});
 
   @override
-  State<OAEHospitalScreen> createState() => _OAEHospitalScreenState();
+  State<OAEAppointmentDate> createState() => _OAEAppointmentDateState();
 }
 
-class _OAEHospitalScreenState extends State<OAEHospitalScreen> {
-  dynamic id, city;
-  List<dynamic> cities = [];
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+class _OAEAppointmentDateState extends State<OAEAppointmentDate> {
+  dynamic id, city, hospitalName;
+  DateTime selectedDate = DateTime.now().subtract(Duration(days: 1));
 
-  Future<List<dynamic>> fetchCities() async {
-    final storage = FlutterSecureStorage();
-    final token = await storage.read(key: "token");
-    if (token == "") {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("You don't have access to perform this action."),
-        backgroundColor: Colors.red,
-      ));
-      return [];
-    }
-
-    try {
-      final response = await Api.get(
-          "/hospital/getAllHospitalsForCity/" + city, token ?? "");
-      if (response["statusCode"] >= 400) {
-        print(response["body"]);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: response["body"]!["data"]!["message"] ??
-                "Something Went Wrong!",
-            backgroundColor: Colors.red,
-          ),
-        );
-        return [];
-      }
-      cities = response["body"]!["data"]!["hospitals"];
-      return cities;
-    } catch (err) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(err.toString()),
-        backgroundColor: Colors.red,
-      ));
-      return [];
-    }
-  }
-
-  Future<void> handleYesClick() async {
-    Navigator.pushNamed(context, "/oaeLastScreening", arguments: id);
-  }
-
-  Future<void> handleNoClick() async {
-    Navigator.pushNamed(context, "/");
-  }
-
-  Future<void> handleHospitalSelection(dynamic data) async {
-    Navigator.pushNamed(context, "/oaeAppointment", arguments: {
-      'id': id,
-      'city': city,
-      'hospital_id': data!['_id'],
-      'hospital_name': data!['name'],
+  void onDateSelected(DateTime newDate) {
+    setState(() {
+      selectedDate = newDate;
     });
+    Navigator.pushNamed(context, "/oaeSchedule");
+    print("Selected date: $newDate");
   }
+
+  Future<void> handlePassClick() async {
+    Navigator.pushNamed(context, "/oaeCount", arguments: id);
+  }
+
+  Future<void> handleReferClick() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -74,14 +32,17 @@ class _OAEHospitalScreenState extends State<OAEHospitalScreen> {
     if (arguments != null && arguments is Map<String, dynamic>) {
       id = arguments['id'];
       city = arguments['city'];
+      hospitalName = arguments['hospital_name'];
     }
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 32, left: 24, right: 24),
+              padding: EdgeInsets.only(top: 32, left: 24, right: 24),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,124 +62,30 @@ class _OAEHospitalScreenState extends State<OAEHospitalScreen> {
                           fontSize: 20,
                           color: Color(0xFF323F4B),
                           fontWeight: FontWeight.w900)),
-                  SizedBox(height: 32),
-                  FutureBuilder(
-                    future: fetchCities(),
-                    builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Container(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      } else {
-                        return SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.6,
-                          child: ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (context, index) {
-                              // Displaying data from API
-                              return GestureDetector(
-                                onTap: () {
-                                  handleHospitalSelection(
-                                      snapshot.data![index]);
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  // height: 110,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color:
-                                            primaryColor), // Define the border here
-                                    borderRadius: BorderRadius.circular(
-                                        10), // Optional: Add border radius
-                                  ),
-                                  child: ListTile(
-                                    leading: Container(
-                                        height: 40,
-                                        width: 40,
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey[400],
-                                          border:
-                                              Border.all(color: primaryColor),
-                                        ),
-                                        child: Icon(
-                                          Icons.camera_enhance_outlined,
-                                          color: Colors.grey[600],
-                                        )),
-                                    title: Text(
-                                      snapshot.data![index]!['name'],
-                                      style: TextStyle(fontSize: 20),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                    subtitle: Text(
-                                      snapshot.data![index]!['address'] ??
-                                          "Address",
-                                    ),
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 0, horizontal: 8),
-                                    minVerticalPadding: 0,
-                                    dense: false,
-                                    visualDensity: VisualDensity(vertical: 1.5),
-                                    trailing: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          SizedBox(
-                                            height: 32,
-                                            width: 80,
-                                            child: OutlinedButton(
-                                              onPressed: () {},
-                                              child: Text(
-                                                "Open",
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.w900),
-                                              ),
-                                              style: OutlinedButton.styleFrom(
-                                                  padding: EdgeInsets.all(0),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            6.0), // Adjust border radius as needed
-                                                  ),
-                                                  backgroundColor:
-                                                      Color(0xFF11ADA2)),
-                                            ),
-                                          ),
-                                          Spacer(),
-                                          SizedBox(
-                                            width: 64,
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  "1 km",
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w900),
-                                                ),
-                                                Spacer(),
-                                                Icon(
-                                                  Icons.location_on,
-                                                  color: Colors.yellow,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ]),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      }
-                    },
-                  )
+                  Text("Hospital: $hospitalName",
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Color(0xFF323F4B),
+                          fontWeight: FontWeight.w900)),
                 ],
               ),
+            ),
+            Spacer(),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: SizedBox(
+                    child: CalendarDatePicker(
+                      initialDate: selectedDate,
+                      firstDate: DateTime.now().subtract(Duration(days: 1)),
+                      lastDate: DateTime(2100),
+                      onDateChanged: onDateSelected,
+                    ),
+                  ),
+                ),
+              ],
             ),
             Spacer(),
             Container(
@@ -484,23 +351,10 @@ class _OAEHospitalScreenState extends State<OAEHospitalScreen> {
                             ),
                           ),
                           Positioned(
-                            left: 12,
-                            top: 16,
-                            child: SizedBox(
-                              width: 9.42,
-                              height: 20.19,
-                              child: Text(
-                                '4',
-                                style: TextStyle(
-                                  color: Color(0xFF11ADA2),
-                                  fontSize: 20,
-                                  fontFamily: 'Kamerik 105 Cyrillic',
-                                  fontWeight: FontWeight.w700,
-                                  height: 0.05,
-                                  letterSpacing: 1.25,
-                                ),
-                              ),
-                            ),
+                            left: 5,
+                            top: 6,
+                            child: Icon(Icons.done,
+                                color: primaryColor, opticalSize: 20),
                           ),
                         ],
                       ),

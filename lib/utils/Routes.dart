@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medapp/Screen/MainScreen.dart';
 import 'package:medapp/Screen/LoginScreen.dart';
+import 'package:medapp/Screen/OAEScreens/OAEAppointmentDate.dart';
 import 'package:medapp/Screen/OAEScreens/OAECountScreen.dart';
 import 'package:medapp/Screen/OAEScreens/OAEHospitalScreen.dart';
 import 'package:medapp/Screen/OAEScreens/OAELastResultScreen.dart';
@@ -21,4 +22,5 @@ final Map<String, WidgetBuilder> routes = {
   "/oaeSchedule": (context) => OAEScheduleScreen(),
   "/oaeCity": (context) => OAECityScreen(),
   "/oaeHospital": (context) => OAEHospitalScreen(),
+  "/oaeAppointment": (context) => OAEAppointmentDate(),
 };
