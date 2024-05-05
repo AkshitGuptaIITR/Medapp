@@ -3,15 +3,15 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:medapp/utils/Api.dart';
 import 'package:medapp/utils/Colors.dart';
 
-class OAECityScreen extends StatefulWidget {
-  const OAECityScreen({super.key});
+class OAEHospitalScreen extends StatefulWidget {
+  const OAEHospitalScreen({super.key});
 
   @override
-  State<OAECityScreen> createState() => _OAECityScreenState();
+  State<OAEHospitalScreen> createState() => _OAEHospitalScreenState();
 }
 
-class _OAECityScreenState extends State<OAECityScreen> {
-  dynamic id;
+class _OAEHospitalScreenState extends State<OAEHospitalScreen> {
+  dynamic id, city;
   List<dynamic> cities = [];
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -27,18 +27,20 @@ class _OAECityScreenState extends State<OAECityScreen> {
     }
 
     try {
-      final response = await Api.get("/hospital/getAllCities", token ?? "");
+      final response = await Api.get(
+          "/hospital/getAllHospitalsForCity/" + city, token ?? "");
       if (response["statusCode"] >= 400) {
+        print(response["body"]);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content:
-                response["body"]["data"]["message"] ?? "Something Went Wrong!",
+            content: response["body"]!["data"]!["message"] ??
+                "Something Went Wrong!",
             backgroundColor: Colors.red,
           ),
         );
         return [];
       }
-      cities = response["body"]["data"]["cities"];
+      cities = response["body"]!["data"]!["hospitals"];
       return cities;
     } catch (err) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -58,15 +60,16 @@ class _OAECityScreenState extends State<OAECityScreen> {
   }
 
   Future<void> handleCitySelection(dynamic data) async {
-    Navigator.pushNamed(context, "/oaeHospital", arguments: {
-      'id': id,
-      'city': data,
-    });
+    print(data);
   }
 
   @override
   Widget build(BuildContext context) {
-    id = ModalRoute.of(context)!.settings.arguments;
+    final arguments = ModalRoute.of(context)!.settings.arguments;
+    if (arguments != null && arguments is Map<String, dynamic>) {
+      id = arguments['id'];
+      city = arguments['city'];
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -75,23 +78,24 @@ class _OAECityScreenState extends State<OAECityScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 32, left: 24, right: 24),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 32),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Select City",
-                          style: TextStyle(
-                            color: Color(0xFF323F4B),
-                            fontSize: 40,
-                            // fontFamily: 'Kamerik 105 Cyrillic',
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                      ],
+                  Text(
+                    "Select Hospital",
+                    style: TextStyle(
+                      color: Color(0xFF323F4B),
+                      fontSize: 40,
+                      // fontFamily: 'Kamerik 105 Cyrillic',
+                      fontWeight: FontWeight.w900,
                     ),
                   ),
+                  Text("City: $city",
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Color(0xFF323F4B),
+                          fontWeight: FontWeight.w900)),
+                  SizedBox(height: 32),
                   FutureBuilder(
                     future: fetchCities(),
                     builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
@@ -113,20 +117,73 @@ class _OAECityScreenState extends State<OAECityScreen> {
                                 },
                                 child: Container(
                                   alignment: Alignment.center,
+                                  // height: 110,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                         color:
                                             primaryColor), // Define the border here
                                     borderRadius: BorderRadius.circular(
-                                        50), // Optional: Add border radius
+                                        10), // Optional: Add border radius
                                   ),
                                   child: ListTile(
+                                    leading: Container(
+                                        height: 40,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[400],
+                                          border:
+                                              Border.all(color: primaryColor),
+                                        ),
+                                        child: Icon(
+                                          Icons.camera_enhance_outlined,
+                                          color: Colors.grey[600],
+                                        )),
                                     title: Text(
-                                      snapshot.data![index],
+                                      snapshot.data![index]!['name'],
                                       style: TextStyle(fontSize: 20),
-                                      textAlign: TextAlign.center,
+                                      textAlign: TextAlign.left,
                                     ),
-                                    // subtitle: Text(snapshot.data![index]['body']),
+                                    subtitle: Text(
+                                      snapshot.data![index]!['address'] ??
+                                          "Address",
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 0, horizontal: 8),
+                                    minVerticalPadding: 0,
+                                    dense: false,
+                                    visualDensity: VisualDensity(vertical: 1.5),
+                                    trailing: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          SizedBox(
+                                            height: 32,
+                                            child: OutlinedButton(
+                                              onPressed: () {},
+                                              child: Text(
+                                                "Open",
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.w900),
+                                              ),
+                                              style: OutlinedButton.styleFrom(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            6.0), // Adjust border radius as needed
+                                                  ),
+                                                  backgroundColor:
+                                                      Color(0xFF11ADA2)),
+                                            ),
+                                          ),
+                                          // Spacer(),
+                                          Icon(
+                                            Icons.location_on,
+                                            color: Colors.yellow,
+                                          ),
+                                        ]),
                                   ),
                                 ),
                               );
