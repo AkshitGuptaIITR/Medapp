@@ -158,6 +158,7 @@ class _OAEHospitalScreenState extends State<OAEHospitalScreen> {
                                         children: [
                                           SizedBox(
                                             height: 32,
+                                            width: 80,
                                             child: OutlinedButton(
                                               onPressed: () {},
                                               child: Text(
@@ -169,6 +170,7 @@ class _OAEHospitalScreenState extends State<OAEHospitalScreen> {
                                                         FontWeight.w900),
                                               ),
                                               style: OutlinedButton.styleFrom(
+                                                  padding: EdgeInsets.all(0),
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -178,10 +180,25 @@ class _OAEHospitalScreenState extends State<OAEHospitalScreen> {
                                                       Color(0xFF11ADA2)),
                                             ),
                                           ),
-                                          // Spacer(),
-                                          Icon(
-                                            Icons.location_on,
-                                            color: Colors.yellow,
+                                          Spacer(),
+                                          SizedBox(
+                                            width: 64,
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "1 km",
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w900),
+                                                ),
+                                                Spacer(),
+                                                Icon(
+                                                  Icons.location_on,
+                                                  color: Colors.yellow,
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ]),
                                   ),
