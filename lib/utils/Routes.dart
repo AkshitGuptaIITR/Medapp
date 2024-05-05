@@ -6,6 +6,7 @@ import 'package:medapp/Screen/OAEScreens/OAECountScreen.dart';
 import 'package:medapp/Screen/OAEScreens/OAEHospitalScreen.dart';
 import 'package:medapp/Screen/OAEScreens/OAELastResultScreen.dart';
 import 'package:medapp/Screen/OAEScreens/OAELastScreeningScreen.dart';
+import 'package:medapp/Screen/OAEScreens/OAEReminderScreen.dart';
 import 'package:medapp/Screen/OAEScreens/OAEScheduleScreen.dart';
 import 'package:medapp/Screen/OAEScreens/OAEScreen.dart';
 import 'package:medapp/Screen/OAEScreens/OAECityScreen.dart';
@@ -23,4 +24,5 @@ final Map<String, WidgetBuilder> routes = {
   "/oaeCity": (context) => OAECityScreen(),
   "/oaeHospital": (context) => OAEHospitalScreen(),
   "/oaeAppointment": (context) => OAEAppointmentDate(),
+  "/oaeReminder": (context) => OAEReminderScreen(),
 };

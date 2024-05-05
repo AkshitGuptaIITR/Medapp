@@ -1,34 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:medapp/utils/Colors.dart';
 
-class OAEAppointmentDate extends StatefulWidget {
-  const OAEAppointmentDate({super.key});
+class OAEReminderScreen extends StatefulWidget {
+  const OAEReminderScreen({super.key});
 
   @override
-  State<OAEAppointmentDate> createState() => _OAEAppointmentDateState();
+  State<OAEReminderScreen> createState() => _OAEReminderScreenState();
 }
 
-class _OAEAppointmentDateState extends State<OAEAppointmentDate> {
-  dynamic id, city, hospitalName;
-  DateTime selectedDate = DateTime.now().subtract(Duration(days: 1));
-
-  void onDateSelected(DateTime newDate) {
-    setState(() {
-      selectedDate = newDate;
-    });
-    Navigator.pushNamed(context, "/oaeReminder", arguments: {
-      'id': id,
-      'city': city,
-      'hospital_name': hospitalName,
-      'date': selectedDate
-    });
+class _OAEReminderScreenState extends State<OAEReminderScreen> {
+  dynamic id, city, hospitalName, selectedDate;
+  Future<void> handleYesClick() async {
+    Navigator.pushNamed(context, "/oaeCity", arguments: id);
   }
 
-  Future<void> handlePassClick() async {
-    Navigator.pushNamed(context, "/oaeCount", arguments: id);
+  Future<void> handleNoClick() async {
+    Navigator.pushNamed(context, "/");
   }
-
-  Future<void> handleReferClick() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -37,61 +25,103 @@ class _OAEAppointmentDateState extends State<OAEAppointmentDate> {
       id = arguments['id'];
       city = arguments['city'];
       hospitalName = arguments['hospital_name'];
+      selectedDate = arguments['date'];
     }
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: EdgeInsets.only(top: 32, left: 24, right: 24),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Select Hospital",
-                    style: TextStyle(
-                      color: Color(0xFF323F4B),
-                      fontSize: 40,
-                      // fontFamily: 'Kamerik 105 Cyrillic',
-                      fontWeight: FontWeight.w900,
+            Container(
+              margin: EdgeInsets.only(top: 64, left: 24, right: 24),
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                  border: Border.all(color: primaryColor),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 3,
+                      blurRadius: 8,
+                      offset: Offset(0, 3), // changes position of shadow
                     ),
-                  ),
-                  SizedBox(height: 8),
-                  Text("City: $city",
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Color(0xFF323F4B),
-                          fontWeight: FontWeight.w900)),
-                  Text("Hospital: $hospitalName",
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Color(0xFF323F4B),
-                          fontWeight: FontWeight.w900)),
-                ],
+                  ],
+                  borderRadius: BorderRadius.all(Radius.circular(12))),
+              child: Text(
+                  "Appointment for OAE screening sucessfully scheduled for $selectedDate at $city, $hospitalName",
+                  style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 16,
+                      fontWeight: FontWeight.w900)),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 82, left: 24, right: 24),
+              child: Text(
+                "Would you like to schedule OAE screening test?",
+                style: TextStyle(
+                  color: Color(0xFF323F4B),
+                  fontSize: 40,
+                  fontFamily: 'Kamerik 105 Cyrillic',
+                  fontWeight: FontWeight.w900,
+                ),
               ),
             ),
             Spacer(),
-            Column(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: SizedBox(
-                    child: CalendarDatePicker(
-                      initialDate: selectedDate,
-                      firstDate: DateTime.now().subtract(Duration(days: 1)),
-                      lastDate: DateTime(2100),
-                      onDateChanged: onDateSelected,
+              children: [
+                Spacer(),
+                GestureDetector(
+                  onTap: handleYesClick,
+                  child: Container(
+                    width: 96,
+                    height: 60,
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 2, color: Color(0xFF11ADA2)),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      'YES',
+                      style: TextStyle(
+                        color: Color(0xFF11ADA2),
+                        fontSize: 24,
+                        fontFamily: 'Mulish',
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ),
+                Spacer(),
+                GestureDetector(
+                  onTap: handleNoClick,
+                  child: Container(
+                    width: 96,
+                    height: 60,
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 2, color: Color(0xFF11ADA2)),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      'NO',
+                      style: TextStyle(
+                        color: Color(0xFF11ADA2),
+                        fontSize: 24,
+                        fontFamily: 'Mulish',
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ),
+                Spacer(),
               ],
             ),
-            Spacer(),
+            // Spacer(),
             Container(
               margin: EdgeInsets.only(top: 72),
               width: MediaQuery.of(context).size.width,
@@ -417,23 +447,10 @@ class _OAEAppointmentDateState extends State<OAEAppointmentDate> {
                             ),
                           ),
                           Positioned(
-                            left: 12,
-                            top: 16,
-                            child: SizedBox(
-                              width: 9.42,
-                              height: 20.19,
-                              child: Text(
-                                '5',
-                                style: TextStyle(
-                                  color: Color(0xFF11ADA2),
-                                  fontSize: 20,
-                                  fontFamily: 'Kamerik 105 Cyrillic',
-                                  fontWeight: FontWeight.w700,
-                                  height: 0.05,
-                                  letterSpacing: 1.25,
-                                ),
-                              ),
-                            ),
+                            left: 5,
+                            top: 6,
+                            child: Icon(Icons.done,
+                                color: primaryColor, opticalSize: 20),
                           ),
                         ],
                       ),
