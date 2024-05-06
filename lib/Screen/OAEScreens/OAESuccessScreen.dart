@@ -16,9 +16,7 @@ class _OAESuccessScreenState extends State<OAESuccessScreen> {
   }
 
   void popAfterDelay() {
-    print("chec");
-    Future.delayed(Duration(seconds: 5), () {
-      print("chec");
+    Future.delayed(Duration(seconds: 3), () {
       Navigator.pushNamed(context, "/");
     });
   }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
+import 'package:medapp/utils/Api.dart';
 import 'package:medapp/utils/Colors.dart';
 
 class OAEReminderScreen extends StatefulWidget {
@@ -10,82 +13,112 @@ class OAEReminderScreen extends StatefulWidget {
 }
 
 class _OAEReminderScreenState extends State<OAEReminderScreen> {
-  dynamic id, city, hospitalName, selectedDate;
+  dynamic id, city, hospitalName, selectedDate, appointmentId;
 
   Future<void> handleYesClick() async {
-    Fluttertoast.showToast(
-        msg: "Reminder set for the appointment",
-        backgroundColor: Colors.white,
-        gravity: ToastGravity.TOP,
-        fontSize: 16,
-        textColor: primaryColor);
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: primaryColor,
-          title: Text(
-            'Important Information for parents',
-            style: TextStyle(
-                fontSize: 32, color: Colors.white, fontWeight: FontWeight.w900),
-          ),
-          content: Container(
-            width: 250,
-            height: 300,
-            child: ListView(
-              children: <Widget>[
-                ListTile(
-                  titleAlignment: ListTileTitleAlignment.top,
-                  leading: Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Icon(Icons.circle, size: 8, color: Colors.white),
-                  ),
-                  horizontalTitleGap: 0,
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 0, vertical: 4),
-                  dense: true,
-                  title: Text(
-                    "Clean your child before the OAE screening.",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  ),
-                ),
-                ListTile(
-                  titleAlignment: ListTileTitleAlignment.top,
-                  dense: true,
-                  horizontalTitleGap: 0,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                  leading: Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Icon(Icons.circle, size: 8, color: Colors.white),
-                  ),
-                  title: Text(
-                    "The OAE screening happens when the child is in sleep, so the night before the test, make sure your child sleeps late and wake up early.",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  ),
-                )
-              ],
+    try {
+      final storage = FlutterSecureStorage();
+      final token = await storage.read(key: "token");
+
+      final response = await Api.put(
+          "/appointment/" + appointmentId,
+          {
+            'reminder': true,
+          },
+          token);
+
+      if (response["statusCode"] >= 400) {
+        print(response["body"]["message"]);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(response["body"]["message"]),
+          backgroundColor: Colors.red,
+        ));
+        return;
+      }
+
+      Fluttertoast.showToast(
+          msg: "Reminder set for the appointment",
+          backgroundColor: Colors.white,
+          gravity: ToastGravity.TOP,
+          fontSize: 16,
+          textColor: primaryColor);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: primaryColor,
+            title: Text(
+              'Important Information for parents',
+              style: TextStyle(
+                  fontSize: 32,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w900),
             ),
-          ),
-          actions: <Widget>[
-            Container(
-              alignment: Alignment.center,
-              child: OutlinedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, "/oaeSuccess");
-                },
-                style: OutlinedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 28),
-                    shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.white, width: 2),
-                        borderRadius: BorderRadius.circular(50))),
-                child: Text('Proceed',
-                    style: TextStyle(color: Colors.white, fontSize: 24)),
+            content: Container(
+              width: 250,
+              height: 300,
+              child: ListView(
+                children: <Widget>[
+                  ListTile(
+                    titleAlignment: ListTileTitleAlignment.top,
+                    leading: Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Icon(Icons.circle, size: 8, color: Colors.white),
+                    ),
+                    horizontalTitleGap: 0,
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+                    dense: true,
+                    title: Text(
+                      "Clean your child before the OAE screening.",
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                  ),
+                  ListTile(
+                    titleAlignment: ListTileTitleAlignment.top,
+                    dense: true,
+                    horizontalTitleGap: 0,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                    leading: Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Icon(Icons.circle, size: 8, color: Colors.white),
+                    ),
+                    title: Text(
+                      "The OAE screening happens when the child is in sleep, so the night before the test, make sure your child sleeps late and wake up early.",
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                  )
+                ],
               ),
             ),
-          ],
-        );
-      },
-    );
+            actions: <Widget>[
+              Container(
+                alignment: Alignment.center,
+                child: OutlinedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/oaeSuccess");
+                  },
+                  style: OutlinedButton.styleFrom(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 12, horizontal: 28),
+                      shape: RoundedRectangleBorder(
+                          side: BorderSide(color: Colors.white, width: 2),
+                          borderRadius: BorderRadius.circular(50))),
+                  child: Text('Proceed',
+                      style: TextStyle(color: Colors.white, fontSize: 24)),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    } catch (err) {
+      print(err);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(err.toString()),
+        backgroundColor: Colors.red,
+      ));
+    }
   }
 
   Future<void> handleNoClick() async {
@@ -99,7 +132,9 @@ class _OAEReminderScreenState extends State<OAEReminderScreen> {
       id = arguments['id'];
       city = arguments['city'];
       hospitalName = arguments['hospital_name'];
-      selectedDate = arguments['date'];
+      selectedDate =
+          DateFormat("dd-MM-yyyy").format(DateTime.parse(arguments['date']));
+      appointmentId = arguments['appointment_id'];
     }
     return Scaffold(
       backgroundColor: Colors.white,
@@ -122,7 +157,7 @@ class _OAEReminderScreenState extends State<OAEReminderScreen> {
                   ],
                   borderRadius: BorderRadius.all(Radius.circular(12))),
               child: Text(
-                  "Appointment for OAE screening sucessfully scheduled for $selectedDate at $city, $hospitalName",
+                  "Appointment for OAE screening sucessfully scheduled for $selectedDate at $hospitalName, $city",
                   style: TextStyle(
                       color: Colors.grey[600],
                       fontSize: 16,

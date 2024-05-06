@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:medapp/utils/Api.dart';
 import 'package:medapp/utils/Colors.dart';
 
 class OAEAppointmentDate extends StatefulWidget {
@@ -9,26 +11,49 @@ class OAEAppointmentDate extends StatefulWidget {
 }
 
 class _OAEAppointmentDateState extends State<OAEAppointmentDate> {
-  dynamic id, city, hospitalName;
+  dynamic id, city, hospitalName, hospital_id;
   DateTime selectedDate = DateTime.now().subtract(Duration(days: 1));
 
-  void onDateSelected(DateTime newDate) {
+  void onDateSelected(DateTime newDate) async {
     setState(() {
       selectedDate = newDate;
     });
-    Navigator.pushNamed(context, "/oaeReminder", arguments: {
-      'id': id,
-      'city': city,
-      'hospital_name': hospitalName,
-      'date': selectedDate
-    });
-  }
+    try {
+      final storage = FlutterSecureStorage();
+      final token = await storage.read(key: "token");
 
-  Future<void> handlePassClick() async {
-    Navigator.pushNamed(context, "/oaeCount", arguments: id);
-  }
+      final response = await Api.post(
+          "/appointment",
+          {
+            'oaeId': id,
+            'hospitalId': hospital_id,
+            'appointmentDate': selectedDate.toString(),
+          },
+          token);
+      if (response["statusCode"] >= 400) {
+        print(response["body"]["message"]);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(response["body"]["message"]),
+          backgroundColor: Colors.red,
+        ));
+        return;
+      }
 
-  Future<void> handleReferClick() async {}
+      Navigator.pushNamed(context, "/oaeReminder", arguments: {
+        'id': id,
+        "appointment_id": response["body"]["data"]["_id"],
+        'city': city,
+        'hospital_name': hospitalName,
+        'date': selectedDate.toString()
+      });
+    } catch (err) {
+      print(err);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(err.toString()),
+        backgroundColor: Colors.red,
+      ));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +62,7 @@ class _OAEAppointmentDateState extends State<OAEAppointmentDate> {
       id = arguments['id'];
       city = arguments['city'];
       hospitalName = arguments['hospital_name'];
+      hospital_id = arguments['hospital_id'];
     }
     return Scaffold(
       backgroundColor: Colors.white,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:medapp/utils/Api.dart';
 import 'package:medapp/utils/Colors.dart';
 
 class OAELastResultScreen extends StatefulWidget {
@@ -11,11 +13,61 @@ class OAELastResultScreen extends StatefulWidget {
 class _OAELastResultScreenState extends State<OAELastResultScreen> {
   dynamic id;
   Future<void> handlePassClick() async {
-    Navigator.pushNamed(context, "/oaeSuccess");
+    try {
+      final storage = FlutterSecureStorage();
+      final token = await storage.read(key: "token");
+
+      final response = await Api.put(
+          "/oae/" + id,
+          {
+            'lastOAEResult': true,
+          },
+          token);
+      if (response["statusCode"] >= 400) {
+        print(response["body"]["message"]);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(response["body"]["message"]),
+          backgroundColor: Colors.red,
+        ));
+        return;
+      }
+      Navigator.pushNamed(context, "/oaeSuccess");
+    } catch (err) {
+      print(err);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(err.toString()),
+        backgroundColor: Colors.red,
+      ));
+    }
   }
 
   Future<void> handleReferClick() async {
-    Navigator.pushNamed(context, "/oaeLastScreening", arguments: id);
+    try {
+      final storage = FlutterSecureStorage();
+      final token = await storage.read(key: "token");
+
+      final response = await Api.put(
+          "/oae/" + id,
+          {
+            'lastOAEResult': false,
+          },
+          token);
+      if (response["statusCode"] >= 400) {
+        print(response["body"]["message"]);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(response["body"]["message"]),
+          backgroundColor: Colors.red,
+        ));
+        return;
+      }
+      Navigator.pushNamed(context, "/oaeLastScreening", arguments: id);
+    } catch (err) {
+      print(err);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(err.toString()),
+        backgroundColor: Colors.red,
+      ));
+    }
   }
 
   @override

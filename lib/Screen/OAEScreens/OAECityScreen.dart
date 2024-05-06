@@ -49,14 +49,6 @@ class _OAECityScreenState extends State<OAECityScreen> {
     }
   }
 
-  Future<void> handleYesClick() async {
-    Navigator.pushNamed(context, "/oaeLastScreening", arguments: id);
-  }
-
-  Future<void> handleNoClick() async {
-    Navigator.pushNamed(context, "/");
-  }
-
   Future<void> handleCitySelection(dynamic data) async {
     Navigator.pushNamed(context, "/oaeHospital", arguments: {
       'id': id,

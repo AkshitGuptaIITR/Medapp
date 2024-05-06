@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:medapp/utils/Api.dart';
 import 'package:medapp/utils/Colors.dart';
 
 class OAELastScreeningScreen extends StatefulWidget {
@@ -12,19 +14,40 @@ class _OAELastScreeningScreenState extends State<OAELastScreeningScreen> {
   dynamic id;
   DateTime selectedDate = DateTime.now().subtract(Duration(days: 1));
 
-  void onDateSelected(DateTime newDate) {
+  void onDateSelected(DateTime newDate) async {
     setState(() {
       selectedDate = newDate;
     });
-    Navigator.pushNamed(context, "/oaeSchedule");
     print("Selected date: $newDate");
-  }
+    try {
+      final storage = FlutterSecureStorage();
+      final token = await storage.read(key: "token");
 
-  Future<void> handlePassClick() async {
-    Navigator.pushNamed(context, "/oaeCount", arguments: id);
-  }
+      final response = await Api.put(
+          "/oae/" + id,
+          {
+            'lastOAEScreening': newDate.toString(),
+          },
+          token);
 
-  Future<void> handleReferClick() async {}
+      if (response["statusCode"] >= 400) {
+        print(response["body"]["message"]);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(response["body"]["message"]),
+          backgroundColor: Colors.red,
+        ));
+        return;
+      }
+
+      Navigator.pushNamed(context, "/oaeSchedule", arguments: id);
+    } catch (err) {
+      print(err);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(err.toString()),
+        backgroundColor: Colors.red,
+      ));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
