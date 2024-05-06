@@ -10,6 +10,7 @@ import 'package:medapp/Screen/OAEScreens/OAEReminderScreen.dart';
 import 'package:medapp/Screen/OAEScreens/OAEScheduleScreen.dart';
 import 'package:medapp/Screen/OAEScreens/OAEScreen.dart';
 import 'package:medapp/Screen/OAEScreens/OAECityScreen.dart';
+import 'package:medapp/Screen/OAEScreens/OAESuccessScreen.dart';
 import 'package:medapp/Screen/RegisterScreen.dart';
 
 final Map<String, WidgetBuilder> routes = {
@@ -25,4 +26,5 @@ final Map<String, WidgetBuilder> routes = {
   "/oaeHospital": (context) => OAEHospitalScreen(),
   "/oaeAppointment": (context) => OAEAppointmentDate(),
   "/oaeReminder": (context) => OAEReminderScreen(),
+  "/oaeSuccess": (context) => OAESuccessScreen()
 };

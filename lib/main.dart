@@ -5,6 +5,7 @@ import 'package:medapp/utils/Routes.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

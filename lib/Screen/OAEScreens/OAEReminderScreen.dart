@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:medapp/utils/Colors.dart';
 
 class OAEReminderScreen extends StatefulWidget {
@@ -10,12 +11,85 @@ class OAEReminderScreen extends StatefulWidget {
 
 class _OAEReminderScreenState extends State<OAEReminderScreen> {
   dynamic id, city, hospitalName, selectedDate;
+
   Future<void> handleYesClick() async {
-    Navigator.pushNamed(context, "/oaeCity", arguments: id);
+    Fluttertoast.showToast(
+        msg: "Reminder set for the appointment",
+        backgroundColor: Colors.white,
+        gravity: ToastGravity.TOP,
+        fontSize: 16,
+        textColor: primaryColor);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: primaryColor,
+          title: Text(
+            'Important Information for parents',
+            style: TextStyle(
+                fontSize: 32, color: Colors.white, fontWeight: FontWeight.w900),
+          ),
+          content: Container(
+            width: 250,
+            height: 300,
+            child: ListView(
+              children: <Widget>[
+                ListTile(
+                  titleAlignment: ListTileTitleAlignment.top,
+                  leading: Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Icon(Icons.circle, size: 8, color: Colors.white),
+                  ),
+                  horizontalTitleGap: 0,
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+                  dense: true,
+                  title: Text(
+                    "Clean your child before the OAE screening.",
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                ),
+                ListTile(
+                  titleAlignment: ListTileTitleAlignment.top,
+                  dense: true,
+                  horizontalTitleGap: 0,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                  leading: Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Icon(Icons.circle, size: 8, color: Colors.white),
+                  ),
+                  title: Text(
+                    "The OAE screening happens when the child is in sleep, so the night before the test, make sure your child sleeps late and wake up early.",
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            Container(
+              alignment: Alignment.center,
+              child: OutlinedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, "/oaeSuccess");
+                },
+                style: OutlinedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 28),
+                    shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Colors.white, width: 2),
+                        borderRadius: BorderRadius.circular(50))),
+                child: Text('Proceed',
+                    style: TextStyle(color: Colors.white, fontSize: 24)),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> handleNoClick() async {
-    Navigator.pushNamed(context, "/");
+    Navigator.pushNamed(context, "/oaeSuccess");
   }
 
   @override
@@ -57,7 +131,7 @@ class _OAEReminderScreenState extends State<OAEReminderScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 82, left: 24, right: 24),
               child: Text(
-                "Would you like to schedule OAE screening test?",
+                "Set reminder for your appointment?",
                 style: TextStyle(
                   color: Color(0xFF323F4B),
                   fontSize: 40,
