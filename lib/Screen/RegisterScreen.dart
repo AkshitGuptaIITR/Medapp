@@ -63,12 +63,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       context: context,
       initialDate: _selectedDate ?? DateTime.now(),
       firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
+      lastDate: DateTime.now(),
     );
 
     if (picked != null && picked != _selectedDate) {
       setState(() {
-        _dateInput.text = DateFormat("yyyy-MM-DD").format(picked);
+        _dateInput.text = DateFormat("dd-MM-yyyy").format(picked);
         _selectedDate = picked;
       });
     }
@@ -115,7 +115,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         content: Text(err.toString()),
         backgroundColor: Colors.red,
       ));
-      print(err);
     }
   }
 

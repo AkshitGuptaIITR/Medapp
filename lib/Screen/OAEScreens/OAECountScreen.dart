@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:medapp/utils/Api.dart';
 import 'package:medapp/utils/Colors.dart';
 
 class OAECountScreen extends StatefulWidget {
@@ -10,7 +12,35 @@ class OAECountScreen extends StatefulWidget {
 
 class _OAECountScreenState extends State<OAECountScreen> {
   Future<void> handleNextClick() async {
-    Navigator.pushNamed(context, "/oaeLastResult", arguments: id);
+    try {
+      final storage = FlutterSecureStorage();
+      final token = await storage.read(key: "token");
+
+      print(countController.value);
+      final response = await Api.put(
+          "/oae/" + id,
+          {
+            'numberOfOAETest': countController.text,
+          },
+          token);
+
+      if (response["statusCode"] >= 400) {
+        print(response["body"]["message"]);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(response["body"]["message"]),
+          backgroundColor: Colors.red,
+        ));
+        return;
+      }
+
+      Navigator.pushNamed(context, "/oaeLastResult", arguments: id);
+    } catch (err) {
+      print(err);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(err.toString()),
+        backgroundColor: Colors.red,
+      ));
+    }
   }
 
   dynamic id;

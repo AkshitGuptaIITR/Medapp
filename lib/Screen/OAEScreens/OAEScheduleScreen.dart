@@ -15,7 +15,7 @@ class _OAEScheduleScreenState extends State<OAEScheduleScreen> {
   }
 
   Future<void> handleNoClick() async {
-    Navigator.pushNamed(context, "/");
+    Navigator.pushNamed(context, "/oaeSuccess", arguments: id);
   }
 
   @override
