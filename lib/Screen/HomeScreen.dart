@@ -20,7 +20,11 @@ class _HomeScreenState extends State<HomeScreen> {
   String name = "";
 
   void handleRegister() {
-    Navigator.pushReplacementNamed(context, "/register");
+    Navigator.pushNamed(context, "/register");
+  }
+
+  void handleClinics() {
+    Navigator.pushNamed(context, "/clinics");
   }
 
   @override
@@ -182,6 +186,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {
                     if (index == 0) {
                       handleRegister();
+                    }
+                    if (index == 1) {
+                      handleClinics();
                     }
                   },
                   child: Container(
