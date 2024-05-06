@@ -25,6 +25,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             toolbarHeight: 180,
             title: Row(children: [
               Column(

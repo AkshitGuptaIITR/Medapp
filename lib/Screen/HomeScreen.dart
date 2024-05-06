@@ -1,11 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:medapp/Redux/AuthState/AuthStateReducer.dart';
 import 'package:medapp/Redux/store.dart';
-import 'package:medapp/utils/Colors.dart';
 import 'package:medapp/utils/Common.dart';
-import 'package:redux/redux.dart';
 
 class HomeScreen extends StatefulWidget {
   final Function openDrawer;
@@ -25,6 +21,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void handleClinics() {
     Navigator.pushNamed(context, "/clinics");
+  }
+
+  void handleTips() {
+    Navigator.pushNamed(context, "/tips");
   }
 
   @override
@@ -189,6 +189,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
                     if (index == 1) {
                       handleClinics();
+                    }
+                    if (index == 2) {
+                      handleTips();
                     }
                   },
                   child: Container(

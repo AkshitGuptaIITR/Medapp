@@ -13,6 +13,7 @@ import 'package:medapp/Screen/OAEScreens/OAEScreen.dart';
 import 'package:medapp/Screen/OAEScreens/OAECityScreen.dart';
 import 'package:medapp/Screen/OAEScreens/OAESuccessScreen.dart';
 import 'package:medapp/Screen/RegisterScreen.dart';
+import 'package:medapp/Screen/Tips/TipsScreen.dart';
 
 final Map<String, WidgetBuilder> routes = {
   "/login": (context) => LoginScreen(),
@@ -28,5 +29,6 @@ final Map<String, WidgetBuilder> routes = {
   "/oaeAppointment": (context) => OAEAppointmentDate(),
   "/oaeReminder": (context) => OAEReminderScreen(),
   "/oaeSuccess": (context) => OAESuccessScreen(),
-  "/clinics": (context) => ClinicScreen()
+  "/clinics": (context) => ClinicScreen(),
+  "/tips": (context) => TipsScreen(),
 };
