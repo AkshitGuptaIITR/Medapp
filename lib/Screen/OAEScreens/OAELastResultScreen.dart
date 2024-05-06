@@ -11,10 +11,12 @@ class OAELastResultScreen extends StatefulWidget {
 class _OAELastResultScreenState extends State<OAELastResultScreen> {
   dynamic id;
   Future<void> handlePassClick() async {
-    Navigator.pushNamed(context, "/oaeLastScreening", arguments: id);
+    Navigator.pushNamed(context, "/oaeSuccess");
   }
 
-  Future<void> handleReferClick() async {}
+  Future<void> handleReferClick() async {
+    Navigator.pushNamed(context, "/oaeLastScreening", arguments: id);
+  }
 
   @override
   Widget build(BuildContext context) {

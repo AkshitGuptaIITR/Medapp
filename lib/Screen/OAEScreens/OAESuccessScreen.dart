@@ -25,36 +25,42 @@ class _OAESuccessScreenState extends State<OAESuccessScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-          child: Center(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "All set!",
-                style: TextStyle(fontSize: 24),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 48),
-                child: Icon(
-                  Icons.check_circle_outline_rounded,
-                  size: 120,
-                  color: primaryColor,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text(
-                  "You have successfully registered!",
+    return PopScope(
+      canPop: false,
+      onPopInvoked: ((didPop) {
+        Navigator.pushNamed(context, "/");
+      }),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+            child: Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "All set!",
                   style: TextStyle(fontSize: 24),
-                  textAlign: TextAlign.center,
                 ),
-              ),
-            ]),
-      )),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 48),
+                  child: Icon(
+                    Icons.check_circle_outline_rounded,
+                    size: 120,
+                    color: primaryColor,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text(
+                    "You have successfully registered!",
+                    style: TextStyle(fontSize: 24),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ]),
+        )),
+      ),
     );
   }
 }
