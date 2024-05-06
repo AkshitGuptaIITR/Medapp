@@ -11,11 +11,11 @@ class OAEScheduleScreen extends StatefulWidget {
 class _OAEScheduleScreenState extends State<OAEScheduleScreen> {
   dynamic id;
   Future<void> handleYesClick() async {
-    Navigator.pushNamed(context, "/oaeCity", arguments: id);
+    Navigator.pushReplacementNamed(context, "/oaeCity", arguments: id);
   }
 
   Future<void> handleNoClick() async {
-    Navigator.pushNamed(context, "/oaeSuccess", arguments: id);
+    Navigator.pushReplacementNamed(context, "/oaeSuccess", arguments: id);
   }
 
   @override
@@ -37,7 +37,7 @@ class _OAEScheduleScreenState extends State<OAEScheduleScreen> {
                 Spacer(),
                 IconButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "/");
+                    Navigator.pushReplacementNamed(context, "/");
                   },
                   icon: Icon(
                     Icons.close,

@@ -107,7 +107,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         return;
       }
 
-      Navigator.pushNamed(context, "/oae",
+      Navigator.pushReplacementNamed(context, "/oae",
           arguments: response["body"]["data"]["patient"]["id"]);
     } catch (err) {
       print(err);

@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String name = "";
 
   void handleRegister() {
-    Navigator.pushNamed(context, "/register");
+    Navigator.pushReplacementNamed(context, "/register");
   }
 
   @override

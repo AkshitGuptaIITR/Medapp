@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await storage.write(key: "token", value: token);
       final store = StoreProvider.of<AuthState>(context);
       store.dispatch(LoginAction(response["body"]["data"]["user"]));
-      Navigator.pushNamed(context, "/");
+      Navigator.pushReplacementNamed(context, "/");
     } catch (err) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(err.toString()),

@@ -33,7 +33,7 @@ class _OAECountScreenState extends State<OAECountScreen> {
         return;
       }
 
-      Navigator.pushNamed(context, "/oaeLastResult", arguments: id);
+      Navigator.pushReplacementNamed(context, "/oaeLastResult", arguments: id);
     } catch (err) {
       print(err);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -66,7 +66,7 @@ class _OAECountScreenState extends State<OAECountScreen> {
                 Spacer(),
                 IconButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "/");
+                    Navigator.pushReplacementNamed(context, "/");
                   },
                   icon: Icon(
                     Icons.close,

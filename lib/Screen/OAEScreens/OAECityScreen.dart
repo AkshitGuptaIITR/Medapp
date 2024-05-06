@@ -50,7 +50,7 @@ class _OAECityScreenState extends State<OAECityScreen> {
   }
 
   Future<void> handleCitySelection(dynamic data) async {
-    Navigator.pushNamed(context, "/oaeHospital", arguments: {
+    Navigator.pushReplacementNamed(context, "/oaeHospital", arguments: {
       'id': id,
       'city': data,
     });

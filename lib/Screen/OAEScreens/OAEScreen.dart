@@ -32,7 +32,7 @@ class _OAEScreenState extends State<OAEScreen> {
         return;
       }
 
-      Navigator.pushNamed(context, "/oaeCount",
+      Navigator.pushReplacementNamed(context, "/oaeCount",
           arguments: response["body"]["data"]["_id"]);
     } catch (err) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -64,7 +64,7 @@ class _OAEScreenState extends State<OAEScreen> {
         return;
       }
 
-      Navigator.pushNamed(context, "/oaeSchedule",
+      Navigator.pushReplacementNamed(context, "/oaeSchedule",
           arguments: response["body"]["data"]["_id"]);
     } catch (err) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -94,7 +94,7 @@ class _OAEScreenState extends State<OAEScreen> {
                 Spacer(),
                 IconButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "/");
+                    Navigator.pushReplacementNamed(context, "/");
                   },
                   icon: Icon(
                     Icons.close,

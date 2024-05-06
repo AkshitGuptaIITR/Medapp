@@ -39,7 +39,7 @@ class _OAEAppointmentDateState extends State<OAEAppointmentDate> {
         return;
       }
 
-      Navigator.pushNamed(context, "/oaeReminder", arguments: {
+      Navigator.pushReplacementNamed(context, "/oaeReminder", arguments: {
         'id': id,
         "appointment_id": response["body"]["data"]["_id"],
         'city': city,

@@ -51,7 +51,7 @@ class _MainScreenState extends State<MainScreen> {
         final response = await Api.get("/user/refresh", token);
         if (response["statusCode"] >= 400) {
           print(response["body"]);
-          Navigator.pushNamed(context, "/login");
+          Navigator.pushReplacementNamed(context, "/login");
           return;
         }
         final store = StoreProvider.of<AuthState>(context);

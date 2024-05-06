@@ -96,7 +96,7 @@ class _OAEReminderScreenState extends State<OAEReminderScreen> {
                 alignment: Alignment.center,
                 child: OutlinedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "/oaeSuccess");
+                    Navigator.pushReplacementNamed(context, "/oaeSuccess");
                   },
                   style: OutlinedButton.styleFrom(
                       padding:
@@ -122,7 +122,7 @@ class _OAEReminderScreenState extends State<OAEReminderScreen> {
   }
 
   Future<void> handleNoClick() async {
-    Navigator.pushNamed(context, "/oaeSuccess");
+    Navigator.pushReplacementNamed(context, "/oaeSuccess");
   }
 
   @override

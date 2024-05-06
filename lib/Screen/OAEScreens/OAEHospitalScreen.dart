@@ -52,15 +52,15 @@ class _OAEHospitalScreenState extends State<OAEHospitalScreen> {
   }
 
   Future<void> handleYesClick() async {
-    Navigator.pushNamed(context, "/oaeLastScreening", arguments: id);
+    Navigator.pushReplacementNamed(context, "/oaeLastScreening", arguments: id);
   }
 
   Future<void> handleNoClick() async {
-    Navigator.pushNamed(context, "/");
+    Navigator.pushReplacementNamed(context, "/");
   }
 
   Future<void> handleHospitalSelection(dynamic data) async {
-    Navigator.pushNamed(context, "/oaeAppointment", arguments: {
+    Navigator.pushReplacementNamed(context, "/oaeAppointment", arguments: {
       'id': id,
       'city': city,
       'hospital_id': data!['_id'],

@@ -39,7 +39,7 @@ class _OAELastScreeningScreenState extends State<OAELastScreeningScreen> {
         return;
       }
 
-      Navigator.pushNamed(context, "/oaeSchedule", arguments: id);
+      Navigator.pushReplacementNamed(context, "/oaeSchedule", arguments: id);
     } catch (err) {
       print(err);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -68,7 +68,7 @@ class _OAELastScreeningScreenState extends State<OAELastScreeningScreen> {
                 Spacer(),
                 IconButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "/");
+                    Navigator.pushReplacementNamed(context, "/");
                   },
                   icon: Icon(
                     Icons.close,

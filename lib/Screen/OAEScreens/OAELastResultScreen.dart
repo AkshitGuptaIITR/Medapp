@@ -31,7 +31,7 @@ class _OAELastResultScreenState extends State<OAELastResultScreen> {
         ));
         return;
       }
-      Navigator.pushNamed(context, "/oaeSuccess");
+      Navigator.pushReplacementNamed(context, "/oaeSuccess");
     } catch (err) {
       print(err);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -60,7 +60,8 @@ class _OAELastResultScreenState extends State<OAELastResultScreen> {
         ));
         return;
       }
-      Navigator.pushNamed(context, "/oaeLastScreening", arguments: id);
+      Navigator.pushReplacementNamed(context, "/oaeLastScreening",
+          arguments: id);
     } catch (err) {
       print(err);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -89,7 +90,7 @@ class _OAELastResultScreenState extends State<OAELastResultScreen> {
                 Spacer(),
                 IconButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "/");
+                    Navigator.pushReplacementNamed(context, "/");
                   },
                   icon: Icon(
                     Icons.close,

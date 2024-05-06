@@ -17,7 +17,7 @@ class _OAESuccessScreenState extends State<OAESuccessScreen> {
 
   void popAfterDelay() {
     Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushNamed(context, "/");
+      Navigator.pushReplacementNamed(context, "/");
     });
   }
 
@@ -26,7 +26,7 @@ class _OAESuccessScreenState extends State<OAESuccessScreen> {
     return PopScope(
       canPop: false,
       onPopInvoked: ((didPop) {
-        Navigator.pushNamed(context, "/");
+        Navigator.pushReplacementNamed(context, "/");
       }),
       child: Scaffold(
         backgroundColor: Colors.white,
