@@ -52,6 +52,10 @@ class _ClinicScreenState extends State<ClinicScreen> {
     getHospitals();
   }
 
+  void handleHospitalSelection(String? id) {
+    Navigator.pushNamed(context, "/clinicProfile", arguments: id ?? "");
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -238,8 +242,8 @@ class _ClinicScreenState extends State<ClinicScreen> {
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () {
-                                  // handleHospitalSelection(
-                                  //     snapshot.data![index]);
+                                  handleHospitalSelection(
+                                      hospitals![index]!['_id']);
                                 },
                                 child: Container(
                                   alignment: Alignment.center,
