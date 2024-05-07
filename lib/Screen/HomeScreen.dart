@@ -1,6 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:medapp/Redux/store.dart';
+import 'package:medapp/utils/Api.dart';
+import 'package:medapp/utils/Colors.dart';
 import 'package:medapp/utils/Common.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,6 +18,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String name = "";
+  List<dynamic> events = [];
+  bool isLoading = true;
 
   void handleRegister() {
     Navigator.pushNamed(context, "/register");
@@ -27,9 +33,108 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.pushNamed(context, "/tips");
   }
 
+  void getEvents() async {
+    try {
+      final storage = FlutterSecureStorage();
+      final token = await storage.read(key: "token");
+
+      final response = await Api.get("/appointment", token ?? "");
+
+      if (response["statusCode"] >= 400) {
+        print(response["body"]["message"]);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(response["body"]["message"]),
+          backgroundColor: Colors.red,
+        ));
+        return;
+      }
+
+      setState(() {
+        events = response["body"]["data"];
+        isLoading = false;
+      });
+    } catch (err) {
+      print(err);
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(err.toString()),
+        backgroundColor: Colors.red,
+      ));
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    getEvents();
+  }
+
+  void handleNotificationClick() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: primaryColor,
+          title: Text(
+            'Remind By?',
+            style: TextStyle(
+                fontSize: 16, color: Colors.white, fontWeight: FontWeight.w900),
+          ),
+          actions: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        padding:
+                            EdgeInsets.symmetric(vertical: 2, horizontal: 20),
+                        shape: RoundedRectangleBorder(
+                            side: BorderSide(color: Colors.white, width: 2),
+                            borderRadius: BorderRadius.circular(50))),
+                    child: Text('Message',
+                        style: TextStyle(
+                            color: primaryColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w900)),
+                  ),
+                ),
+                SizedBox(
+                  width: 12,
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: OutlinedButton.styleFrom(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 2, horizontal: 20),
+                        shape: RoundedRectangleBorder(
+                            side: BorderSide(color: Colors.white, width: 2),
+                            borderRadius: BorderRadius.circular(50))),
+                    child: Text('Call',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w900)),
+                  ),
+                ),
+              ],
+            )
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -256,6 +361,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 68.51,
                   margin: EdgeInsets.only(top: 32, left: 16, right: 16),
                   decoration: ShapeDecoration(
+                    shadows: [
+                      BoxShadow(
+                        color: Color(0x3F000000),
+                        blurRadius: 6,
+                        offset: Offset(0, 0), // Offset for bottom shadow
+                        spreadRadius: 0,
+                      ),
+                    ],
                     color: Color(0xFF11ADA2),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
@@ -283,6 +396,142 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Image.asset(
                             "assets/images/contact_iilustration.png"))
                   ]),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  alignment: Alignment.centerLeft,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0x3F000000),
+                        blurRadius: 6,
+                        offset: Offset(0, 0), // Offset for bottom shadow
+                        spreadRadius: 0,
+                      ),
+                    ],
+                  ),
+                  child: isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: events.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 16, horizontal: 16),
+                              decoration: BoxDecoration(
+                                color: Color(0xFFCAF3E2),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(50),
+                                    bottomLeft: Radius.circular(50)),
+                              ),
+                              child: ListTile(
+                                title: Text(
+                                  events[index]!["patientId"]["parentName"] ??
+                                      "",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 0, horizontal: 6),
+                                visualDensity: VisualDensity.comfortable,
+                                leading: Container(
+                                  width: 64,
+                                  decoration: ShapeDecoration(
+                                      color: primaryColor,
+                                      shape: CircleBorder(
+                                          side: BorderSide(
+                                              color: Colors.white, width: 4))),
+                                ),
+                                subtitle: Text(
+                                  events[index]!["patientId"]["contactNumber"]
+                                      .toString(),
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                                trailing: Container(
+                                  width: 120,
+                                  child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              height: 12,
+                                              width: 48,
+                                              decoration: BoxDecoration(
+                                                color: primaryColor,
+                                                borderRadius: BorderRadius.only(
+                                                    topLeft: Radius.circular(6),
+                                                    topRight:
+                                                        Radius.circular(6)),
+                                              ),
+                                            ),
+                                            Container(
+                                                height: 36,
+                                                width: 48,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.yellow[300],
+                                                    border: Border.all(
+                                                      color: primaryColor,
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                      bottomLeft:
+                                                          Radius.circular(6),
+                                                      bottomRight:
+                                                          Radius.circular(6),
+                                                    )),
+                                                child: Flexible(
+                                                  child: Text(
+                                                      DateFormat("dd MMM")
+                                                          .format(DateTime
+                                                              .parse(events[
+                                                                      index][
+                                                                  "appointmentDate"]))
+                                                          .toString(),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w900)),
+                                                ))
+                                          ],
+                                        ),
+                                        GestureDetector(
+                                          onTap: () =>
+                                              handleNotificationClick(),
+                                          child: Container(
+                                            margin: EdgeInsets.only(left: 6),
+                                            width: 48,
+                                            height: 48,
+                                            decoration: BoxDecoration(
+                                                color: primaryColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(12)),
+                                            child: Icon(
+                                              Icons.notifications,
+                                              color: Colors.white,
+                                              size: 28,
+                                            ),
+                                          ),
+                                        )
+                                      ]),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                 )
               ],
             ),

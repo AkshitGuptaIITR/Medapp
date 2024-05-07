@@ -141,6 +141,10 @@ class _PatientsScreenState extends State<PatientsScreen> {
                   child: OutlinedButton(
                     onPressed: () {
                       deletePatients();
+                      setState(() {
+                        isDeleting = false;
+                        st.clear();
+                      });
                       Navigator.pop(context);
                     },
                     style: OutlinedButton.styleFrom(
@@ -164,6 +168,10 @@ class _PatientsScreenState extends State<PatientsScreen> {
                   alignment: Alignment.center,
                   child: OutlinedButton(
                     onPressed: () {
+                      setState(() {
+                        isDeleting = false;
+                        st.clear();
+                      });
                       Navigator.pop(context);
                     },
                     style: OutlinedButton.styleFrom(
