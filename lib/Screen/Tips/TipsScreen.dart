@@ -47,7 +47,7 @@ class _TipsScreenState extends State<TipsScreen> {
               ),
               child: SafeArea(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 24, right: 24, top: 64),
+                  padding: const EdgeInsets.only(left: 24, right: 24, top: 36),
                   child: selectedTip == 0
                       ? Column(children: [
                           Row(

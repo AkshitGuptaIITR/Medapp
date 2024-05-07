@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medapp/Screen/ClinicScreen.dart';
+import 'package:medapp/Screen/FAQScreen.dart';
 import 'package:medapp/Screen/MainScreen.dart';
 import 'package:medapp/Screen/LoginScreen.dart';
 import 'package:medapp/Screen/OAEScreens/OAEAppointmentDate.dart';
@@ -31,4 +32,5 @@ final Map<String, WidgetBuilder> routes = {
   "/oaeSuccess": (context) => OAESuccessScreen(),
   "/clinics": (context) => ClinicScreen(),
   "/tips": (context) => TipsScreen(),
+  "/faq": (context) => FAQScreen()
 };

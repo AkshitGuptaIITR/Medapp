@@ -15,6 +15,7 @@ class _PatientsScreenState extends State<PatientsScreen> {
   List<dynamic> _patients = [];
   bool isLoading = true, isDeleting = false;
   Set<String> st = {};
+  int totalCount = 0;
 
   void getPatients() async {
     try {
@@ -25,6 +26,9 @@ class _PatientsScreenState extends State<PatientsScreen> {
 
       if (response["statusCode"] >= 400) {
         print(response["body"]["message"]);
+        setState(() {
+          isLoading = false;
+        });
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(response["body"]["message"]),
           backgroundColor: Colors.red,
@@ -35,6 +39,7 @@ class _PatientsScreenState extends State<PatientsScreen> {
       setState(() {
         _patients = response["body"]["data"];
         isLoading = false;
+        totalCount = response["body"]["totalCount"];
       });
       print(response);
     } catch (err) {
@@ -119,7 +124,6 @@ class _PatientsScreenState extends State<PatientsScreen> {
       });
       return;
     }
-    print(st.length);
 
     showDialog(
       context: context,
@@ -256,7 +260,7 @@ class _PatientsScreenState extends State<PatientsScreen> {
                           width: 150,
                           child: Flexible(
                             child: Text(
-                              "${_patients.length} people\nregistered",
+                              "${totalCount} people\nregistered",
                               softWrap: true,
                               style: TextStyle(
                                   fontSize: 12,

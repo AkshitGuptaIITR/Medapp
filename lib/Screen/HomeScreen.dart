@@ -33,6 +33,10 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.pushNamed(context, "/tips");
   }
 
+  void handleFAQ() {
+    Navigator.pushNamed(context, "/faq");
+  }
+
   void getEvents() async {
     try {
       final storage = FlutterSecureStorage();
@@ -297,6 +301,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
                     if (index == 2) {
                       handleTips();
+                    }
+                    if (index == 3) {
+                      handleFAQ();
                     }
                   },
                   child: Container(
