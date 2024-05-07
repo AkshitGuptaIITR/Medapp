@@ -78,7 +78,7 @@ class _OAEAppointmentDateState extends State<OAEAppointmentDate> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Select Hospital",
+                    "Select Date",
                     style: TextStyle(
                       color: Color(0xFF323F4B),
                       fontSize: 40,

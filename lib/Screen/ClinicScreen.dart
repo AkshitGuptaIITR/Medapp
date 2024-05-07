@@ -246,6 +246,7 @@ class _ClinicScreenState extends State<ClinicScreen> {
                                       hospitals![index]!['_id']);
                                 },
                                 child: Container(
+                                  margin: EdgeInsets.only(bottom: 16),
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     color: Colors.white,

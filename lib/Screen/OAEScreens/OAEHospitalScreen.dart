@@ -123,12 +123,22 @@ class _OAEHospitalScreenState extends State<OAEHospitalScreen> {
                                       snapshot.data![index]);
                                 },
                                 child: Container(
+                                  margin: EdgeInsets.only(bottom: 16),
                                   alignment: Alignment.center,
                                   // height: 110,
                                   decoration: BoxDecoration(
+                                    color: Colors.white,
                                     border: Border.all(
                                         color:
                                             primaryColor), // Define the border here
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Color(0x3F000000),
+                                        blurRadius: 6,
+                                        offset: Offset(0, 4),
+                                        spreadRadius: 0,
+                                      )
+                                    ],
                                     borderRadius: BorderRadius.circular(
                                         10), // Optional: Add border radius
                                   ),
