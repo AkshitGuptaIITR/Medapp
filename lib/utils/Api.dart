@@ -37,16 +37,30 @@ class Api {
     return _processResponse(response);
   }
 
-  static Future<Map<String, dynamic>> delete(String endpoint) async {
-    final response = await http.delete(Uri.parse('$baseUrl$endpoint'));
+  static Future<Map<String, dynamic>> delete(
+      String endpoint, dynamic data, String? token) async {
+    final response = await http.delete(
+      Uri.parse('$baseUrl$endpoint'),
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+      },
+      body: jsonEncode(data),
+    );
     return _processResponse(response);
   }
 
   static Map<String, dynamic> _processResponse(http.Response response) {
-    final Map<String, dynamic> result = {
+    Map<String, dynamic> result = {
       'statusCode': response.statusCode,
-      'body': jsonDecode(response.body),
     };
+    try {
+      // Try to decode the response body as JSON
+      result['body'] = jsonDecode(response.body);
+    } catch (e) {
+      // If an exception occurs, set body to null
+      result['body'] = null;
+    }
     return result;
   }
 }
