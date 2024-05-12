@@ -76,6 +76,10 @@ class _MainScreenState extends State<MainScreen> {
     scaffoldKey.currentState?.openDrawer();
   }
 
+  void handleClose() {
+    scaffoldKey.currentState?.closeDrawer();
+  }
+
   @override
   Widget build(BuildContext context) {
     return isLoading
@@ -87,7 +91,7 @@ class _MainScreenState extends State<MainScreen> {
           )
         : Scaffold(
             key: scaffoldKey,
-            drawer: MyDrawer(),
+            drawer: MyDrawer(closeDrawer: handleClose),
             backgroundColor: Colors.white,
             bottomNavigationBar: BottomAppBarScreen(
               idx: idx,

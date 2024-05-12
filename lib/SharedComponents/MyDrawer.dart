@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:medapp/utils/Common.dart';
 
 class MyDrawer extends StatelessWidget {
-  MyDrawer({super.key});
+  final Function closeDrawer;
+  MyDrawer({Key? key, required this.closeDrawer}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +49,17 @@ class MyDrawer extends StatelessWidget {
                     ),
                   ),
                   Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 34),
-                    child: Icon(
-                      Icons.close,
-                      color: Colors.white,
-                      size: 32,
+                  GestureDetector(
+                    onTap: () {
+                      closeDrawer();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 34),
+                      child: Icon(
+                        Icons.close,
+                        color: Colors.white,
+                        size: 32,
+                      ),
                     ),
                   )
                 ]),
