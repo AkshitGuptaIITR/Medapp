@@ -5,7 +5,8 @@ import 'package:medapp/Widgets/OnOff.dart';
 import 'package:medapp/utils/Colors.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+  final Function handleBack;
+  const SettingsScreen({Key? key, required this.handleBack}) : super(key: key);
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -45,7 +46,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         Icons.arrow_back,
                         color: Colors.white,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        widget.handleBack(0);
+                      },
                     ),
                   ),
                   Text(

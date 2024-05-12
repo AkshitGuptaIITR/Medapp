@@ -27,8 +27,10 @@ class _MainScreenState extends State<MainScreen> {
   final List pages = [
     (key) => HomeScreen(openDrawer: key),
     () => CalendarScreen(),
-    () => PatientsScreen(),
-    () => SettingsScreen(),
+    (changeIndex) => PatientsScreen(handleBack: changeIndex),
+    (changeIndex) => SettingsScreen(
+          handleBack: changeIndex,
+        ),
   ];
 
   @override
@@ -91,7 +93,13 @@ class _MainScreenState extends State<MainScreen> {
               idx: idx,
               callback: handleChangeIdx,
             ),
-            body: idx == 0 ? pages[idx](handleOpen) : pages[idx](),
+            body: idx == 0
+                ? pages[idx](handleOpen)
+                : idx == 2
+                    ? pages[idx](handleChangeIdx)
+                    : idx == 3
+                        ? pages[idx](handleChangeIdx)
+                        : pages[idx](),
           );
   }
 }

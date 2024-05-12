@@ -19,8 +19,12 @@ class _TipsScreenState extends State<TipsScreen> {
   final List pages = [
     (key) => HomeScreen(openDrawer: key),
     () => CalendarScreen(),
-    () => PatientsScreen(),
-    () => SettingsScreen(),
+    (changeIndex) => PatientsScreen(
+          handleBack: changeIndex,
+        ),
+    (changeIndex) => SettingsScreen(
+          handleBack: changeIndex,
+        ),
   ];
 
   void handleChangeIdx(int index) {
@@ -293,7 +297,11 @@ Children
                 ),
               ),
             )
-          : pages[idx](),
+          : idx == 2
+              ? pages[idx](handleChangeIdx)
+              : idx == 3
+                  ? pages[idx](handleChangeIdx)
+                  : pages[idx](),
     );
   }
 }

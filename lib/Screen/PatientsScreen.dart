@@ -5,7 +5,8 @@ import 'package:medapp/utils/Api.dart';
 import 'package:medapp/utils/Colors.dart';
 
 class PatientsScreen extends StatefulWidget {
-  const PatientsScreen({super.key});
+  final Function handleBack;
+  PatientsScreen({Key? key, required this.handleBack}) : super(key: key);
 
   @override
   State<PatientsScreen> createState() => _PatientsScreenState();
@@ -241,7 +242,8 @@ class _PatientsScreenState extends State<PatientsScreen> {
                               color: Colors.white,
                             ),
                             onPressed: () {
-                              // Navigator.pop(context);
+                              print("check");
+                              widget.handleBack(0);
                             },
                           ),
                         ),
