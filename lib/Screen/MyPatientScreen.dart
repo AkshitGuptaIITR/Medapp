@@ -15,6 +15,7 @@ class _MyPatientScreenState extends State<MyPatientScreen> {
   bool isLoading = true;
   Map<String, dynamic> patient_data = {};
   int oae = 0, bera = 0, pta = 0;
+  List<dynamic> reminders = [];
 
   @override
   void initState() {
@@ -363,6 +364,27 @@ class _MyPatientScreenState extends State<MyPatientScreen> {
                               ))
                         ]),
                       ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.symmetric(vertical: 6),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              // spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(12),
+                              bottomRight: Radius.circular(12))),
+                      child: reminders.length == 0
+                          ? Text("No reminders")
+                          : Text("data"),
                     )
                   ],
                 ),
