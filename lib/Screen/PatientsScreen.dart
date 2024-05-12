@@ -25,7 +25,6 @@ class _PatientsScreenState extends State<PatientsScreen> {
       final response = await Api.get("/patient", token ?? "");
 
       if (response["statusCode"] >= 400) {
-        print(response["body"]["message"]);
         setState(() {
           isLoading = false;
         });
@@ -199,6 +198,10 @@ class _PatientsScreenState extends State<PatientsScreen> {
     );
   }
 
+  void handlePatientClick(String? _id) {
+    Navigator.pushNamed(context, "/myPatient", arguments: _id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -357,6 +360,10 @@ class _PatientsScreenState extends State<PatientsScreen> {
                                     .length,
                                 itemBuilder: (context, idx) {
                                   return ListTile(
+                                    onTap: () {
+                                      handlePatientClick(_patients[index]![
+                                          "patients"]![idx]!["_id"]);
+                                    },
                                     leading: Image.asset(
                                       "assets/images/child.png",
                                       height: 40,

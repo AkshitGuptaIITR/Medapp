@@ -4,6 +4,7 @@ import 'package:medapp/Screen/ClinicScreen.dart';
 import 'package:medapp/Screen/FAQScreen.dart';
 import 'package:medapp/Screen/MainScreen.dart';
 import 'package:medapp/Screen/LoginScreen.dart';
+import 'package:medapp/Screen/MyPatientScreen.dart';
 import 'package:medapp/Screen/OAEScreens/OAEAppointmentDate.dart';
 import 'package:medapp/Screen/OAEScreens/OAECountScreen.dart';
 import 'package:medapp/Screen/OAEScreens/OAEHospitalScreen.dart';
@@ -34,5 +35,6 @@ final Map<String, WidgetBuilder> routes = {
   "/clinics": (context) => ClinicScreen(),
   "/tips": (context) => TipsScreen(),
   "/faq": (context) => FAQScreen(),
-  "/clinicProfile": (context) => ClinicProfileScreen()
+  "/clinicProfile": (context) => ClinicProfileScreen(),
+  "/myPatient": (context) => MyPatientScreen()
 };
