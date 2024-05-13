@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
           "/user/login", {"email": email, "password": password}, "");
       if (response["statusCode"] >= 400) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(response["body"]["message"]),
+          content: Text(response["body"]!["message"] ?? "Error while login."),
           backgroundColor: Colors.red,
         ));
         return;
@@ -36,6 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
       store.dispatch(LoginAction(response["body"]["data"]["user"]));
       Navigator.pushReplacementNamed(context, "/");
     } catch (err) {
+      print(err);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(err.toString()),
         backgroundColor: Colors.red,
