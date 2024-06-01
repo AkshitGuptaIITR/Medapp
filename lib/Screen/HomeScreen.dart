@@ -420,125 +420,147 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: isLoading
                       ? Center(child: CircularProgressIndicator())
-                      : ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: events.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 16, horizontal: 16),
-                              decoration: BoxDecoration(
-                                color: Color(0xFFCAF3E2),
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(50),
-                                    bottomLeft: Radius.circular(50)),
-                              ),
-                              child: ListTile(
-                                title: Text(
-                                  events[index]!["patientId"]["parentName"] ??
-                                      "",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 0, horizontal: 6),
-                                visualDensity: VisualDensity.comfortable,
-                                leading: Container(
-                                  width: 64,
-                                  decoration: ShapeDecoration(
-                                      color: primaryColor,
-                                      shape: CircleBorder(
-                                          side: BorderSide(
-                                              color: Colors.white, width: 4))),
-                                ),
-                                subtitle: Text(
-                                  events[index]!["patientId"]["contactNumber"]
-                                      .toString(),
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                                trailing: Container(
-                                  width: 120,
-                                  child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Column(
+                      : events.length == 0
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                  child: Text(
+                                "No upcoming events",
+                                style: TextStyle(fontSize: 18),
+                              )),
+                            )
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: events.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 16, horizontal: 16),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFCAF3E2),
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(50),
+                                        bottomLeft: Radius.circular(50)),
+                                  ),
+                                  child: ListTile(
+                                    title: Text(
+                                      events[index]!["patientId"]
+                                              ["parentName"] ??
+                                          "",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 0, horizontal: 6),
+                                    visualDensity: VisualDensity.comfortable,
+                                    leading: Container(
+                                      width: 64,
+                                      decoration: ShapeDecoration(
+                                          color: primaryColor,
+                                          shape: CircleBorder(
+                                              side: BorderSide(
+                                                  color: Colors.white,
+                                                  width: 4))),
+                                    ),
+                                    subtitle: Text(
+                                      events[index]!["patientId"]
+                                              ["contactNumber"]
+                                          .toString(),
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                    trailing: Container(
+                                      width: 120,
+                                      child: Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Container(
-                                              height: 12,
-                                              width: 48,
-                                              decoration: BoxDecoration(
-                                                color: primaryColor,
-                                                borderRadius: BorderRadius.only(
-                                                    topLeft: Radius.circular(6),
-                                                    topRight:
-                                                        Radius.circular(6)),
-                                              ),
-                                            ),
-                                            Container(
-                                                height: 36,
-                                                width: 48,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.yellow[300],
-                                                    border: Border.all(
-                                                      color: primaryColor,
-                                                    ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  height: 12,
+                                                  width: 48,
+                                                  decoration: BoxDecoration(
+                                                    color: primaryColor,
                                                     borderRadius:
                                                         BorderRadius.only(
-                                                      bottomLeft:
-                                                          Radius.circular(6),
-                                                      bottomRight:
-                                                          Radius.circular(6),
-                                                    )),
-                                                child: Flexible(
-                                                  child: Text(
-                                                      DateFormat("dd MMM")
-                                                          .format(DateTime
-                                                              .parse(events[
-                                                                      index][
-                                                                  "appointmentDate"]))
-                                                          .toString(),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.w900)),
-                                                ))
-                                          ],
-                                        ),
-                                        GestureDetector(
-                                          onTap: () =>
-                                              handleNotificationClick(),
-                                          child: Container(
-                                            margin: EdgeInsets.only(left: 6),
-                                            width: 48,
-                                            height: 48,
-                                            decoration: BoxDecoration(
-                                                color: primaryColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(12)),
-                                            child: Icon(
-                                              Icons.notifications,
-                                              color: Colors.white,
-                                              size: 28,
+                                                            topLeft: Radius
+                                                                .circular(6),
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    6)),
+                                                  ),
+                                                ),
+                                                Container(
+                                                    height: 36,
+                                                    width: 48,
+                                                    decoration: BoxDecoration(
+                                                        color:
+                                                            Colors.yellow[300],
+                                                        border: Border.all(
+                                                          color: primaryColor,
+                                                        ),
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  6),
+                                                          bottomRight:
+                                                              Radius.circular(
+                                                                  6),
+                                                        )),
+                                                    child: Flexible(
+                                                      child: Text(
+                                                          DateFormat("dd MMM")
+                                                              .format(DateTime
+                                                                  .parse(events[
+                                                                          index]
+                                                                      [
+                                                                      "appointmentDate"]))
+                                                              .toString(),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w900)),
+                                                    ))
+                                              ],
                                             ),
-                                          ),
-                                        )
-                                      ]),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
+                                            GestureDetector(
+                                              onTap: () =>
+                                                  handleNotificationClick(),
+                                              child: Container(
+                                                margin:
+                                                    EdgeInsets.only(left: 6),
+                                                width: 48,
+                                                height: 48,
+                                                decoration: BoxDecoration(
+                                                    color: primaryColor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12)),
+                                                child: Icon(
+                                                  Icons.notifications,
+                                                  color: Colors.white,
+                                                  size: 28,
+                                                ),
+                                              ),
+                                            )
+                                          ]),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                 )
               ],
             ),
