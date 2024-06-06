@@ -1,9 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:medapp/Redux/AuthState/AuthStateActions.dart';
+import 'package:medapp/Redux/AuthState/AuthStateReducer.dart';
 import 'package:medapp/utils/Common.dart';
 
-class MyDrawer extends StatelessWidget {
+class MyDrawer extends StatefulWidget {
   final Function closeDrawer;
   MyDrawer({Key? key, required this.closeDrawer}) : super(key: key);
+
+  @override
+  State<MyDrawer> createState() => _MyDrawerState();
+}
+
+class _MyDrawerState extends State<MyDrawer> {
+  Future<void> handleDrawerClick(dynamic data) async {
+    if (data == "Log Out") {
+      final storage = FlutterSecureStorage();
+      await storage.delete(key: "token");
+      final store = StoreProvider.of<AuthState>(context);
+      store.dispatch(LogoutAction());
+      Navigator.pushReplacementNamed(context, "/login");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +70,7 @@ class MyDrawer extends StatelessWidget {
                   Spacer(),
                   GestureDetector(
                     onTap: () {
-                      closeDrawer();
+                      widget.closeDrawer();
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(right: 34),
@@ -80,6 +99,9 @@ class MyDrawer extends StatelessWidget {
                           ),
                           bottom: BorderSide(color: Colors.white, width: 1))),
                   child: ListTile(
+                    onTap: () {
+                      handleDrawerClick(drawerRowItems[index].name);
+                    },
                     leading: Container(
                       decoration: ShapeDecoration(
                         color: Color(0xFF00726B),
